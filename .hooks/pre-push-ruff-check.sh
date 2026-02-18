@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-ruff check src/ tests/ || {
+hatch run lint || {
     echo ""
     echo "Push failed: ruff lint errors."
-    echo 'Run "ruff check --fix src/ tests/" to auto-fix.'
+    echo 'Run "hatch run lint -- --fix" to auto-fix.'
     exit 1
 }

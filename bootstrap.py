@@ -2,23 +2,23 @@
 
 from __future__ import annotations
 
+import argparse
 import re
 import shutil
 import sys
 from pathlib import Path
 
-# Files that contain 'mypackage' or 'MyPackage' references to replace
+# Files containing template placeholders to replace.
+# Paths are relative to project root. The source directory is handled
+# separately (renamed before file contents are updated).
 FILES_TO_UPDATE = [
     "pyproject.toml",
     "README.md",
     "docs/conf.py",
     "docs/contributing.md",
-    ".github/workflows/test.yml",
-    ".github/workflows/slow-tests.yml",
-    ".github/workflows/publish.yml",
+    "tests/unit/test_smoke.py",
+    "LICENSE",
     ".github/ISSUE_TEMPLATE/bug_report.yml",
-    ".readthedocs.yaml",
-    ".claude/rules/bootstrap.md",
 ]
 
 
@@ -27,7 +27,7 @@ def to_pascal_case(name: str) -> str:
     return "".join(word.capitalize() for word in name.split("_"))
 
 
-def validate_name(name: str) -> None:
+def validate_package_name(name: str) -> None:
     """Validate package name is a valid Python identifier."""
     if not re.match(r"^[a-z][a-z0-9_]*$", name):
         print(f"Error: '{name}' is not a valid Python package name.")
@@ -47,24 +47,47 @@ def replace_in_file(path: Path, replacements: list[tuple[str, str]]) -> bool:
     return False
 
 
+def parse_args() -> argparse.Namespace:
+    """Parse command-line arguments."""
+    parser = argparse.ArgumentParser(
+        description="Bootstrap the project template with your package name and metadata.",
+    )
+    parser.add_argument(
+        "package_name",
+        help="Python package name (lowercase, underscores allowed). Example: my_project",
+    )
+    parser.add_argument(
+        "--author",
+        required=True,
+        help="Author name for pyproject.toml, LICENSE, and docs. Example: 'Jane Doe'",
+    )
+    parser.add_argument(
+        "--github-user",
+        required=True,
+        help="GitHub username for repository URLs. Example: janedoe",
+    )
+    return parser.parse_args()
+
+
 def main() -> None:
     """Run the bootstrap process."""
-    if len(sys.argv) != 2:
-        print("Usage: python bootstrap.py <package_name>")
-        print("Example: python bootstrap.py myproject")
-        sys.exit(1)
+    args = parse_args()
 
-    name = sys.argv[1]
-    validate_name(name)
+    validate_package_name(args.package_name)
+    name = args.package_name
     pascal_name = to_pascal_case(name)
     root = Path(__file__).parent
 
     replacements = [
         ("mypackage", name),
         ("MyPackage", pascal_name),
+        ("Tucker Lancaster", args.author),
+        ("tlancaster6", args.github_user),
     ]
 
-    print(f"Bootstrapping template as '{name}' ({pascal_name})...\n")
+    print(f"Bootstrapping template as '{name}' ({pascal_name})...")
+    print(f"  Author: {args.author}")
+    print(f"  GitHub: {args.github_user}\n")
 
     # Rename source directory
     src_old = root / "src" / "mypackage"
@@ -82,9 +105,12 @@ def main() -> None:
         shutil.move(str(readme_template), str(readme))
         print("  Replaced README.md with README_TEMPLATE.md")
 
-    # Update file contents
+    # Update file contents (including the renamed __init__.py)
+    init_py = f"src/{name}/__init__.py"
+    all_files = [*FILES_TO_UPDATE, init_py]
+
     updated = []
-    for rel_path in FILES_TO_UPDATE:
+    for rel_path in all_files:
         path = root / rel_path
         if path.exists() and replace_in_file(path, replacements):
             updated.append(rel_path)
@@ -98,7 +124,7 @@ def main() -> None:
     print("\nNext steps:")
     print("  1. pip install hatch && hatch env create")
     print("  2. hatch run test")
-    print("  3. Update pyproject.toml metadata (description, URLs, etc.)")
+    print("  3. Open in Claude Code and run /gsd:new-project")
 
     # Self-delete (may fail on Windows if interpreter holds a handle)
     bootstrap_path = Path(__file__)

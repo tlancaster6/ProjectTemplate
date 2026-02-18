@@ -7,9 +7,9 @@ A Python project template designed for AI-assisted development with Claude Code
 ### Phase 1: Bootstrap the repository
 
 1. Copy this template into a new project directory
-2. Run the bootstrap script to rename the package:
+2. Run the bootstrap script to rename the package and set metadata:
    ```bash
-   python bootstrap.py <package_name>
+   python bootstrap.py <package_name> --author "Your Name" --github-user yourusername
    ```
 3. Set up the development environment:
    ```bash
@@ -88,7 +88,7 @@ The agent will use the bootstrap instructions in `.claude/rules/bootstrap.md` to
 ```
 .
 ├── src/mypackage/
-│   ├── __init__.py         # Package root (__version__, __all__)
+│   ├── __init__.py         # Package root (version via importlib.metadata, __all__)
 │   └── py.typed            # PEP 561 type stub marker
 ├── tests/unit/
 │   └── test_smoke.py       # Smoke test for package import

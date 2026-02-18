@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-ruff format --check src/ tests/ || {
+hatch run format -- --check || {
     echo ""
     echo "Push failed: format violations."
-    echo 'Run "ruff format src/ tests/" to fix.'
+    echo 'Run "hatch run format" to fix.'
     exit 1
 }

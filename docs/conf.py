@@ -1,6 +1,7 @@
 """Sphinx configuration for project documentation."""
 
 import sys
+from datetime import datetime
 from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
 
@@ -9,7 +10,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 # Project information
 project = "MyPackage"
-copyright = "2026, Tucker Lancaster"
+copyright = f"{datetime.now().year}, Tucker Lancaster"
 author = "Tucker Lancaster"
 try:
     release = version("mypackage")
