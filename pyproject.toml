@@ -35,6 +35,9 @@ Issues = "https://github.com/tlancaster6/mypackage/issues"
 # [project.scripts]
 # mypackage = "mypackage.cli:main"
 
+[tool.hatch.build.targets.sdist]
+exclude = [".planning/", ".claude/", ".hooks/"]
+
 [tool.hatch.build.targets.wheel]
 packages = ["src/mypackage"]
 
