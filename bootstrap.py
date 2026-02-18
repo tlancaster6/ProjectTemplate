@@ -18,6 +18,7 @@ FILES_TO_UPDATE = [
     ".github/workflows/publish.yml",
     ".github/ISSUE_TEMPLATE/bug_report.yml",
     ".readthedocs.yaml",
+    ".claude/rules/bootstrap.md",
 ]
 
 
@@ -73,6 +74,13 @@ def main() -> None:
         print(f"  Renamed src/mypackage -> src/{name}")
     elif not src_new.exists():
         print(f"  Warning: src/mypackage not found and src/{name} does not exist")
+
+    # Replace template README with project README
+    readme_template = root / "README_TEMPLATE.md"
+    readme = root / "README.md"
+    if readme_template.exists():
+        shutil.move(str(readme_template), str(readme))
+        print("  Replaced README.md with README_TEMPLATE.md")
 
     # Update file contents
     updated = []
