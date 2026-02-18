@@ -120,10 +120,18 @@ exclude_lines = [
 
 [tool.semantic_release]
 version_toml = ["pyproject.toml:project.version"]
-branch = "main"
 commit_message = "chore(release): {version}"
 build_command = "python -m build"
 tag_format = "v{version}"
+
+[tool.semantic_release.branches.main]
+match = "^main$"
+prerelease = false
+
+[tool.semantic_release.branches.dev]
+match = "^dev$"
+prerelease = true
+prerelease_token = "dev"
 
 [tool.semantic_release.changelog]
 changelog_file = "CHANGELOG.md"

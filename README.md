@@ -56,11 +56,11 @@ The agent will use the bootstrap instructions in `.claude/rules/bootstrap.md` to
 
 | Workflow | Trigger | What it does |
 |----------|---------|--------------|
-| `test.yml` | Push/PR to main | Matrix test (Ubuntu + Windows, Python 3.11-3.13), pre-commit, basedpyright |
+| `test.yml` | Push to main/dev, PR to main | Matrix test (Ubuntu + Windows, Python 3.11-3.13), pre-commit, basedpyright |
 | `slow-tests.yml` | Manual dispatch | Full test suite including `@pytest.mark.slow` |
 | `docs.yml` | PR to main | Sphinx build with `-W` (warnings as errors) |
-| `release.yml` | Push to main | Semantic versioning from conventional commits |
-| `publish.yml` | `v*` tag | Build + publish to TestPyPI then PyPI (OIDC trusted publishing) |
+| `release.yml` | Push to main/dev | Full releases on main, dev pre-releases (`1.2.3-dev.1`) on dev |
+| `publish.yml` | Full release tag (`v1.2.3`) | Build + publish to TestPyPI then PyPI (OIDC trusted publishing) |
 
 ### Secrets Required for CI/CD
 
