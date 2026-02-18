@@ -62,6 +62,18 @@ The agent will use the bootstrap instructions in `.claude/rules/bootstrap.md` to
 | `release.yml` | Push to main/dev | Full releases on main, dev pre-releases (`1.2.3-dev.1`) on dev |
 | `publish.yml` | Full release tag (`v1.2.3`) | Build + publish to TestPyPI then PyPI (OIDC trusted publishing) |
 
+### Branching and Releases
+
+All day-to-day development happens on `dev`. Pushing to `dev` runs tests and creates pre-release versions (`1.2.3-dev.1`) via semantic-release. Pre-releases are tagged but not published to PyPI.
+
+When `dev` is ready for release, merge it into `main`. Semantic-release analyzes the accumulated commits and creates a full release (`1.2.3`, `1.3.0`, etc.) based on conventional commit types (`fix:` → patch, `feat:` → minor, `BREAKING CHANGE` → major). Full release tags trigger the publish workflow to TestPyPI and PyPI.
+
+```
+dev  ──fix──feat──fix──▶  v1.3.0-dev.1, v1.3.0-dev.2, ...
+                    │
+main ◀──── merge ───┘──▶  v1.3.0  →  PyPI
+```
+
 ### Secrets Required for CI/CD
 
 | Secret | Where | Purpose |
