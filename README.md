@@ -2,11 +2,13 @@
 
 A Python project template designed for AI-assisted development with Claude Code
 
-## Setup (Two Phases)
+## Usage (Three Phases)
+
+**important**: Follow these instructions carefully, skipping around gets messy fast
 
 ### Phase 1: Bootstrap the repository
 
-1. Copy this template into a new project directory
+1. Copy this template into a new project directory and make an initial commit
 2. Run the bootstrap script to rename the package and set metadata:
    ```bash
    python bootstrap.py <package_name> --author "Your Name" --github-user yourusername
@@ -24,6 +26,7 @@ A Python project template designed for AI-assisted development with Claude Code
    hatch run lint
    hatch run typecheck
    ```
+5. Commit your changes
 
 ### Phase 2: Initialize the project
 
@@ -33,7 +36,13 @@ Open the project in Claude Code and run `/gsd:new-project`. This starts an inter
 - Creates `.planning/PROJECT.md` with the project context
 - Generates a phased roadmap for execution
 
-The agent will use the bootstrap instructions in `.claude/rules/bootstrap.md` to finish scaffolding (source structure, tests, docs, CLAUDE.md, etc.) as part of the first phase of work.
+### Phase 3: Bootstrap the scaffolding
+
+Start a **new conversation** and run `/bootstrap`. This reads `.planning/BOOTSTRAP.md` and executes the remaining scaffolding steps: source package structure, test directories, docs, CLAUDE.md, pyproject.toml metadata, and verification.
+
+Running this in a fresh conversation ensures the instructions have full context rather than competing with the lengthy new-project flow.
+
+At this point I like to commit my changes to main then switch to a dev branch before diving into code (see branching and release workflow below)
 
 ## What's Included
 
@@ -113,10 +122,11 @@ main ◀──── merge ───┘──▶  v1.3.0  →  PyPI
 │   ├── ISSUE_TEMPLATE/     # Bug report + feature request forms
 │   └── PULL_REQUEST_TEMPLATE.md
 ├── .claude/rules/
-│   ├── bootstrap.md        # Agent bootstrap instructions
 │   ├── code-style.md       # Formatting and naming conventions
 │   ├── source-code.md      # __init__.py and docstring requirements
 │   └── workflow.md         # GSD workflow instructions
+├── .claude/skills/
+│   └── bootstrap/SKILL.md  # /bootstrap command for post-scaffolding setup
 ├── .hooks/                 # Pre-push ruff lint + format scripts
 ├── bootstrap.py            # Renames mypackage to your package (self-deletes)
 ├── README_TEMPLATE.md      # Skeletal project README (replaces this file)
