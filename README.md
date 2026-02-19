@@ -40,7 +40,7 @@ Open the project in Claude Code and run `/gsd:new-project`. This starts an inter
 
 Start a **new conversation** and run `/bootstrap`. This reads `.planning/BOOTSTRAP.md` and executes the remaining scaffolding steps: source package structure, test directories, docs, CLAUDE.md, pyproject.toml metadata, and verification.
 
-Running this in a fresh conversation ensures the instructions have full context rather than competing with the lengthy new-project flow.
+Running this in a fresh conversation ensures the instructions have full context rather than competing with the lengthy new-project flow. It also ensures the `/bootstrap` skill is loaded.
 
 At this point I like to commit my changes to main then switch to a dev branch before diving into code (see branching and release workflow below)
 

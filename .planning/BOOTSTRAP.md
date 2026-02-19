@@ -52,7 +52,13 @@ Create whichever test directories the project actually needs.
 
 ### 4. Create CODE_OF_CONDUCT.md
 
-Standard Contributor Covenant v2.1. Update the enforcement contact URL to point to the project's GitHub issues.
+Download the Contributor Covenant v2.1 verbatim from its official source — do NOT attempt to write or paraphrase it (the document contains sensitive policy language that triggers content filters):
+
+```bash
+curl -fsSL "https://www.contributor-covenant.org/version/2/1/code_of_conduct/code_of_conduct.md" -o CODE_OF_CONDUCT.md
+```
+
+Then find the `[INSERT CONTACT METHOD]` placeholder near the bottom and replace it with a link to the project's GitHub issues page.
 
 ### 5. Update pyproject.toml metadata
 
